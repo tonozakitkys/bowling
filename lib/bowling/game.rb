@@ -12,20 +12,29 @@ module Bowling
 			score = 0
 			roll_idx = 0
 			10.times do
-				if @rolls[roll_idx] == 10 # strike
-					score += @rolls[roll_idx] # pins
-					score += @rolls[roll_idx+1] + @rolls[roll_idx+2] # strike bonus
+				if roll_at(roll_idx) == 10 # strike
+					score += roll_at(roll_idx) # pins
+					score += two_rolls_from(roll_idx + 1) # strike bonus
 					roll_idx += 1
-				elsif (@rolls[roll_idx] + @rolls[roll_idx+1]) == 10 # spare
-					score += @rolls[roll_idx]	+ @rolls[roll_idx+1] # pins
-					score += @rolls[roll_idx+2] # spare bonus
+				elsif two_rolls_from(roll_idx) == 10 # spare
+					score += two_rolls_from(roll_idx) # pins
+					score += roll_at(roll_idx + 2) # spare bonus
 					roll_idx += 2
 				else
-					score += @rolls[roll_idx] + @rolls[roll_idx+1]
+					score += two_rolls_from(roll_idx)
 					roll_idx += 2
 				end
 		  end
 		  score
+		end
+
+		private
+		def roll_at(idx)
+			@rolls[idx]
+		end
+
+		def two_rolls_from(idx)
+			@rolls[idx] + @rolls[idx + 1]
 		end
 	end
 end
