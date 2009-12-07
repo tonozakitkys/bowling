@@ -31,6 +31,10 @@ module Bowling
 			end
 		end
 
+		def score
+			self.pins + self.bonus
+		end
+
 		def roll
 			@rolls[@idx]
 		end
@@ -62,8 +66,7 @@ module Bowling
 			score = 0
 			cur = RollCursor.new(@rolls)
 			10.times do
-				score += cur.pins
-				score += cur.bonus
+				score += cur.score
 				cur.next
 			end
 		  score
