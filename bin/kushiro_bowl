@@ -1,0 +1,38 @@
+#!/usr/bin/env ruby
+
+# クラスライブラリ読み込み
+# __FILE__：ファイルパス
+# File.diename：ディレクトリ名抜き出し
+# __FILE__の1つ上のディレクトリ配下のlibを参照
+$LOAD_PATH << File.join(File.dirname(__FILE__), "..", "lib")
+require "bowling"
+
+# このファイルを直接実行した場合　の判定
+if $0 == __FILE__
+	game = Bowling::Game.new()
+	10.times do |i|
+		score = [0,0,0]
+		if i < 9
+			2.times do |j|
+				print "#{i+1}フレーム #{j+1}投目: "
+				score[i] = gets.to_i
+				if score[0] > 10
+					score[0] = 10
+					puts "スコアを修正しました(#{score[0]})"
+				elsif score[0] + score[1] > 10
+					score[1] = 10 - score[0]
+					puts "スコアを修正しました(#{score[1]})"
+				end
+				game.roll(score[i])
+				break if score[i] >= 10
+			end
+		else
+			3.times do |j|
+				print "#{i+1}フレーム #{j+1}投目: "
+				game.roll(gets.to_i)
+			end
+		end
+	end
+	puts "合計スコア: #{game.score}"
+end
+
